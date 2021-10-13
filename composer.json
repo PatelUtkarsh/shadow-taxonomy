@@ -1,28 +1,31 @@
 {
-	"name": "developwithwp/shadow-taxonomies",
-	"description": "A library used for create relationships between CPT's",
-	"version": "0.0.1",
-	"type": "package",
-	"keywords": [],
-	"homepage": "https://github.com/mrbobbybryant/shadow-taxonomy",
-	"license": "GPL-2.0+",
-	"author": {
-		"name": "Bobby Bryant",
-		"email": "bobby@developwithwp.com",
-		"homepage": "Bobby Bryant",
-		"role": "Developer"
-	},
+  "name": "spock/shadow-taxonomies",
+  "description": "A library used for create relationships between CPT's",
+  "version": "0.0.3",
+  "type": "package",
+  "keywords": [],
+  "homepage": "https://github.com/patelutkarsh/shadow-taxonomy",
+  "license": "GPL-2.0+",
+  "author": {
+    "name": "Utkarsh Patel",
+    "email": "utkarshpatel@outlook.com",
+    "homepage": "utkarshpatel.com",
+    "role": "Developer"
+  },
   "minimum-stability": "dev",
-	"repositories" : [
-		{
-			"type" : "composer",
-			"url"  : "https://wpackagist.org"
-		}
-	],
-	"require": {},
-    "require-dev": {
-	},
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://wpackagist.org"
+    }
+  ],
+  "require": {
+  },
+  "require-dev": {
+  },
   "autoload": {
-      "files": [ "index.php" ]
+    "files": [
+      "index.php"
+    ]
   }
 }
