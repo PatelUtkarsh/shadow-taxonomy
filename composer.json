@@ -16,7 +16,7 @@
   "repositories": [
     {
       "type": "composer",
-      "url": "https://wpackagist.org"
+      "url": "https://packagist.org"
     }
   ],
   "require": {
