@@ -20,7 +20,7 @@ function create_relationship( $post_type, $taxonomy ) {
  * @param string $post_type Post Type Slug
  * @param string $taxonomy Taxonomy Slug
  *
- * @return Closure
+ * @return \Closure
  */
 function create_shadow_term( $post_type, $taxonomy ) {
 	return function( $post_id ) use ( $post_type, $taxonomy ) {
@@ -68,7 +68,7 @@ function create_shadow_term( $post_type, $taxonomy ) {
  *
  * @param string $taxonomy Taxonomy Slug.
  *
- * @return Closure
+ * @return \Closure
  */
 function delete_shadow_term( $taxonomy ) {
 	return function( $postid ) use ( $taxonomy ) {
