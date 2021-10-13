@@ -53,6 +53,28 @@ name.
 
 This line should go immediately after the ```register_taxonomy``` call in the first step.
 
+### Merging both steps using helper:
+Use the helper `register_shadow_taxonomy` to register taxonomy for shadow and establish the relation. (Merging above two steps).
+
+```php
+\Shadow_Taxonomy\Core\register_shadow_taxonomy(
+	[ 'movies' ],
+	[ 'actor' ],
+	'_actor',
+	[
+		'label'         => 'Actors',
+		'rewrite'       => false,
+		'show_tagcloud' => false,
+		'show_ui'       => false,
+		'hierarchical'  => false,
+		'show_in_menu'  => false,
+		'meta_box_cb'   => false,
+		'show_in_rest'  => true,
+	]
+);
+
+```
+
 ### API
 ```php
 get_the_posts( $post_id, $taxonomy, $cpt )
