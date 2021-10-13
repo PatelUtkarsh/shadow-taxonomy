@@ -1,7 +1,7 @@
 {
   "name": "spock/shadow-taxonomies",
   "description": "A library used for create relationships between CPT's",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "type": "package",
   "keywords": [],
   "homepage": "https://github.com/patelutkarsh/shadow-taxonomy",
@@ -12,7 +12,7 @@
     "homepage": "utkarshpatel.com",
     "role": "Developer"
   },
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
   "repositories": [
     {
       "type": "composer",
