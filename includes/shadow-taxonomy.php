@@ -246,3 +246,23 @@ function get_the_posts( $post_id, $taxonomy, $cpt ) {
 	}
 	return false;
 }
+
+/**
+ * Helper function to register shadow taxonomy.
+ *
+ * @param array  $from_post_types Post types to register the connection from, Supported post type where it will connect.
+ * @param array  $to_post_types   Post types to register the connection to, Shadow terms will be created from this post type.
+ * @param string $taxonomy        The taxonomy to use for the registered connection.
+ * @param array  $taxonomy_args   Arguments to use for the registration of the shadow taxonomy.
+ */
+function register_shadow_taxonomy( array $from_post_types, array $to_post_types, string $taxonomy, array $taxonomy_args ): void {
+	register_taxonomy(
+		$taxonomy,
+		$from_post_types,
+		$taxonomy_args
+	);
+
+	foreach ( $to_post_types as $post_type ) {
+		create_relationship( $post_type, $taxonomy );
+	}
+}
