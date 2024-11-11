@@ -15,6 +15,10 @@ post type is created, updated, or deleted, the associated shadow taxonomy term i
 
 Additionally by using a taxonomy we get a nice UI of checkboxes for linking posts together for free on the post edit screen.
 
+## Installation
+```
+composer require spock/shadow-taxonomies
+```
 
 ## Useage
 
