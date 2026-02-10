@@ -1,0 +1,35 @@
+parameters:
+    level: 6
+    paths:
+        - index.php
+        - includes/
+    scanDirectories:
+        - vendor/
+    bootstrapFiles:
+        - vendor/autoload.php
+    ignoreErrors:
+        # WP-CLI classes are not available in static analysis without dedicated stubs.
+        -
+            identifier: class.notFound
+            reportUnmatched: false
+        -
+            identifier: function.notFound
+            reportUnmatched: false
+        # WP_Query constructor never returns WP_Error, but the defensive check is intentional.
+        -
+            identifier: function.impossibleType
+            reportUnmatched: false
+        # WP-CLI command methods use standard array $args / array $assoc_args signatures.
+        -
+            identifier: missingType.iterableValue
+            reportUnmatched: false
+        # WP-CLI command methods have no meaningful return type (void in practice).
+        -
+            identifier: missingType.return
+            reportUnmatched: false
+    excludePaths:
+        analyseAndScan:
+            # WP-CLI bootstrap guard — file returns early when WP_CLI is not defined.
+            # PHPStan cannot resolve the WP_CLI_Command base class without stubs.
+            # The CLI file is still scanned for symbol discovery but not analysed.
+            - includes/shadow-taxonomy-cli.php

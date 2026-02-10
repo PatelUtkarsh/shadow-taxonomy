@@ -1,4 +1,12 @@
 <?php
+/**
+ * Shadow Taxonomy core functions.
+ *
+ * @package Shadow_Taxonomy
+ */
+
+declare(strict_types=1);
+
 namespace Shadow_Taxonomy\Core;
 
 /**
@@ -37,7 +45,7 @@ function create_relationship( string $post_type, string $taxonomy ): void {
  * @return \Closure
  */
 function create_shadow_term( string $post_type, string $taxonomy ): \Closure {
-	return function( $post_id ) use ( $post_type, $taxonomy ) {
+	return function ( $post_id ) use ( $post_type, $taxonomy ) {
 		$term = get_associated_term( $post_id, $taxonomy );
 		$post = get_post( $post_id );
 
@@ -92,7 +100,7 @@ function create_shadow_term( string $post_type, string $taxonomy ): \Closure {
  * @return \Closure
  */
 function delete_shadow_term( string $taxonomy ): \Closure {
-	return function( $post_id ) use ( $taxonomy ) {
+	return function ( $post_id ) use ( $taxonomy ) {
 		$term = get_associated_term( $post_id, $taxonomy );
 
 		if ( ! $term ) {
@@ -119,7 +127,7 @@ function delete_shadow_term( string $taxonomy ): \Closure {
  * @param \WP_Post $post     The WP Post object.
  * @param string   $taxonomy Taxonomy slug.
  *
- * @return array|false Term array on success, false on error.
+ * @return array{term_id: int, term_taxonomy_id: int}|false Term array on success, false on error.
  */
 function create_shadow_taxonomy_term( int $post_id, $post, string $taxonomy ) {
 	$new_term = wp_insert_term( $post->post_title, $taxonomy, [ 'slug' => $post->post_name ] );
@@ -154,11 +162,7 @@ function create_shadow_taxonomy_term( int $post_id, $post, string $taxonomy ) {
  * @return bool True if in sync, false otherwise.
  */
 function post_type_already_in_sync( $term, $post ): bool {
-	if ( isset( $term->slug ) && isset( $post->post_name ) ) {
-		return $term->name === $post->post_title && $term->slug === $post->post_name;
-	}
-
-	return $term->name === $post->post_title;
+	return $term->name === $post->post_title && $term->slug === $post->post_name;
 }
 
 /**
@@ -179,11 +183,13 @@ function get_related_post_by_slug( $term, string $post_type ) {
 		'no_found_rows'  => true,
 	] );
 
-	if ( empty( $query->posts ) || is_wp_error( $query ) ) {
+	if ( empty( $query->posts ) ) {
 		return false;
 	}
 
-	return $query->posts[0];
+	$post = $query->posts[0];
+
+	return $post instanceof \WP_Post ? $post : false;
 }
 
 /**
@@ -200,12 +206,12 @@ function get_associated_post_id( $term ) {
 /**
  * Find the shadow or associated post for the input taxonomy term.
  *
- * @param \WP_Term $term      WP Term object.
- * @param string   $post_type Post Type slug.
+ * @param \WP_Term|false $term      WP Term object, or false if not found.
+ * @param string         $post_type Post Type slug.
  *
  * @return \WP_Post|false The associated post object, or false if not found.
  */
-function get_associated_post( $term, string $post_type ) {
+function get_associated_post( $term, string $post_type ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- Public API; $post_type kept for signature compatibility.
 	if ( empty( $term ) ) {
 		return false;
 	}
@@ -216,7 +222,9 @@ function get_associated_post( $term, string $post_type ) {
 		return false;
 	}
 
-	return get_post( $post_id );
+	$post = get_post( $post_id );
+
+	return $post instanceof \WP_Post ? $post : false;
 }
 
 /**
@@ -267,7 +275,7 @@ function get_the_posts( int $post_id, string $taxonomy, string $cpt ) {
 	$terms = get_the_terms( $post_id, $taxonomy );
 
 	if ( ! empty( $terms ) ) {
-		$posts = array_filter( array_map( function( $term ) use ( $cpt ) {
+		$posts = array_filter( array_map( function ( $term ) use ( $cpt ) {
 			return get_associated_post( $term, $cpt );
 		}, $terms ) );
 
@@ -280,10 +288,10 @@ function get_the_posts( int $post_id, string $taxonomy, string $cpt ) {
 /**
  * Helper function to register a shadow taxonomy and establish the relationship.
  *
- * @param array  $from_post_types Post types to register the taxonomy on (where checkboxes appear).
- * @param array  $to_post_types   Post types that shadow terms will be created from.
- * @param string $taxonomy        The taxonomy slug to use for the registered connection.
- * @param array  $taxonomy_args   Arguments to use for the registration of the shadow taxonomy.
+ * @param array<string>        $from_post_types Post types to register the taxonomy on (where checkboxes appear).
+ * @param array<string>        $to_post_types   Post types that shadow terms will be created from.
+ * @param string               $taxonomy        The taxonomy slug to use for the registered connection.
+ * @param array<string, mixed> $taxonomy_args Arguments to use for the registration of the shadow taxonomy.
  */
 function register_shadow_taxonomy( array $from_post_types, array $to_post_types, string $taxonomy, array $taxonomy_args ): void {
 	register_taxonomy(
