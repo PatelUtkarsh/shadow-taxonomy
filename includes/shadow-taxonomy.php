@@ -162,6 +162,31 @@ function post_type_already_in_sync( $term, $post ): bool {
 }
 
 /**
+ * Find the associated shadow post for a given term slug. This function is useful
+ * when you need to look up a post by slug rather than by meta-based ID association.
+ *
+ * @param \WP_Term $term      The WP Term object.
+ * @param string   $post_type The Post Type slug.
+ *
+ * @return \WP_Post|false The post object, or false if not found.
+ */
+function get_related_post_by_slug( $term, string $post_type ) {
+	$query = new \WP_Query( [
+		'post_type'      => $post_type,
+		'posts_per_page' => 1,
+		'post_status'    => 'publish',
+		'name'           => $term->slug,
+		'no_found_rows'  => true,
+	] );
+
+	if ( empty( $query->posts ) || is_wp_error( $query ) ) {
+		return false;
+	}
+
+	return $query->posts[0];
+}
+
+/**
  * Get the associated shadow post ID from a given term object.
  *
  * @param \WP_Term $term WP Term object.
