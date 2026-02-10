@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<ruleset name="Shadow Taxonomy">
+	<description>PHPCS ruleset for Shadow Taxonomy library.</description>
+
+	<!-- Scan these files -->
+	<file>index.php</file>
+	<file>includes/</file>
+
+	<!-- Show progress and sniff codes in all reports -->
+	<arg value="ps"/>
+	<arg name="colors"/>
+
+	<!-- Strip the filepaths in reports down to the relevant bit. -->
+	<arg name="basepath" value="."/>
+
+	<!-- Check up to 8 files simultaneously. -->
+	<arg name="parallel" value="8"/>
+
+	<!-- Use WordPress Coding Standards -->
+	<rule ref="WordPress">
+		<!-- Allow short array syntax -->
+		<exclude name="Generic.Arrays.DisallowShortArraySyntax"/>
+		<exclude name="Universal.Arrays.DisallowShortArraySyntax"/>
+		<!-- We use namespaced functions, not class methods with file-naming conventions -->
+		<exclude name="WordPress.Files.FileName"/>
+		<!-- Allow closures and anonymous functions -->
+		<exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket"/>
+		<exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments"/>
+		<exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine"/>
+	</rule>
+
+	<!-- Verify compatibility with PHP 8.2+ -->
+	<rule ref="PHPCompatibilityWP"/>
+	<config name="testVersion" value="8.2-"/>
+
+	<!-- WordPress minimum version -->
+	<config name="minimum_wp_version" value="6.0"/>
+
+	<!-- Prefixes for WordPress hooks, options, etc. -->
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="shadow_taxonomy"/>
+				<element value="Shadow_Taxonomy"/>
+			</property>
+		</properties>
+	</rule>
+
+	<!-- Text domain for i18n -->
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="shadow-taxonomy"/>
+			</property>
+		</properties>
+	</rule>
+</ruleset>

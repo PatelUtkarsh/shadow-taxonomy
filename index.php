@@ -8,6 +8,8 @@
  * @package Shadow_Taxonomy
  */
 
+declare(strict_types=1);
+
 namespace Shadow_Taxonomy;
 
 require_once __DIR__ . '/includes/shadow-taxonomy.php';
